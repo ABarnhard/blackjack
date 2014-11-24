@@ -2,13 +2,17 @@
 
 var mongoose = require('mongoose'),
     bcrypt   = require('bcrypt'),
+    request  = require('request'),
+    fs       = require('fs'),
+    path     = require('path'),
     UserSchema = null,
     User = null;
 
 UserSchema = new mongoose.Schema({
   username:  {type: String, required: true, validate: [usernameV, 'username length'], unique: true},
   password:  {type: String, required: true, validate: [passwordV, 'password length']},
-  createdAt: {type: Date,  required: true, default: Date.now}
+  avatar:    {type: String, required: true},
+  createdAt: {type: Date,   required: true, default: Date.now}
 });
 
 UserSchema.methods.encrypt = function(){
@@ -28,6 +32,24 @@ UserSchema.statics.login = function(obj, cb){
     }
 
     cb(user);
+  });
+};
+
+UserSchema.methods.downloadAvatar = function(cb){
+  var folderPath    = __dirname + '/../../public/assets/img/' + this._id,
+      fileExtension = path.extname(this.avatar),
+      filePath      = folderPath + '/avatar' + fileExtension,
+      self          = this;
+
+
+  fs.mkdir(folderPath, function(err){
+    if(err){return cb(err);}
+    var ws = fs.createWriteStream(filePath);
+    request.get(self.avatar).pipe(ws);
+    ws.on('finish', function(){
+      self.avatar = '/assets/img/' + self._id + '/avatar' + fileExtension;
+      cb(err);
+    });
   });
 };
 
