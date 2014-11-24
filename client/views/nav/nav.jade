@@ -9,11 +9,14 @@ nav.top-bar(data-topbar, role="navigation", ng-controller='NavCtrl')
    section.top-bar-section(ng-cloak)
       ul.left(ng-show='online')
          li: a: i.fa.fa-wifi
-      ul.right(ng-show='init && !username')
+      ul.right(ng-show='init && !user')
          li: a(ui-sref='home') Home
          li: a(ui-sref='register') Register
          li: a(ui-sref='login') Login
-      ul.right(ng-show='init && username')
+      ul.right(ng-show='init && user')
          li: a(ui-sref='home') Home
          li.divider
-         li: a(ng-click='logout()') {{username}}
+         li
+            a(ng-click='logout()')
+               .avatar(style='background-image:url({{user.avatar}})')
+               | {{user.username}}

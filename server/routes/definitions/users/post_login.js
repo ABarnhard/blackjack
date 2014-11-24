@@ -19,7 +19,7 @@ module.exports = {
     User.login(request.payload, function(user){
       if(user){
         request.auth.session.set(user);
-        reply();
+        reply({username: user.username, avatar: user.avatar});
       }else {
         reply().code(401);
       }
