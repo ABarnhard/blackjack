@@ -15,6 +15,7 @@ nav.top-bar(data-topbar, role="navigation", ng-controller='NavCtrl')
          li: a(ui-sref='login') Login
       ul.right(ng-show='init && user')
          li: a(ui-sref='home') Home
+         li: a(ui-sref='rooms.list') Rooms
          li.divider
          li
             a(ng-click='logout()')
