@@ -3,6 +3,14 @@
 
   angular.module('blackjack')
     .controller('RoomsListCtrl', ['$scope', function($scope){
-      $scope.check = 'I am in the rooms.list state';
+
+      $scope.chat = function(msg){
+        window.socket.emit('global-chat', msg);
+      };
+      window.socket.on('bGlobal-chat', function(data){
+        console.log(data);
+        $('#messages').append('<div>'+data+'</div>');
+      });
+
     }]);
 })();
