@@ -36,7 +36,7 @@ UserSchema.statics.login = function(obj, cb){
 };
 
 UserSchema.methods.downloadAvatar = function(cb){
-  var folderPath    = __dirname + '/../../public/assets/img/' + this._id,
+  var folderPath    = __dirname + '/../../assets/img/' + this._id,
       fileExtension = path.extname(this.avatar),
       filePath      = folderPath + '/avatar' + fileExtension,
       self          = this;
