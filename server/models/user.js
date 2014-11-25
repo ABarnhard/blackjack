@@ -3,7 +3,7 @@
 var mongoose = require('mongoose'),
     bcrypt   = require('bcrypt'),
     request  = require('request'),
-    fs       = require('fs'),
+    AWS      = require('aws-sdk'),
     path     = require('path'),
     UserSchema = null,
     User = null;
@@ -36,11 +36,25 @@ UserSchema.statics.login = function(obj, cb){
 };
 
 UserSchema.methods.downloadAvatar = function(cb){
+  var s3   = new AWS.S3(),
+      url  = this.avatar,
+      ext  = path.extname(this.avatar),
+      file = this._id + '.avatar' + ext;
+
+  this.avatar = 'https://s3.amazonaws.com/' + process.env.AWS_BUCKET + '/' + file;
+
+  request({url: url, encoding: null}, function(err, response, body){
+    var params = {Bucket: process.env.AWS_BUCKET, Key: file, Body: body, ACL: 'public-read'};
+    s3.putObject(params, cb);
+  });
+};
+
+/*
+UserSchema.methods.downloadAvatar = function(cb){
   var folderPath    = __dirname + '/../../assets/img/' + this._id,
       fileExtension = path.extname(this.avatar),
       filePath      = folderPath + '/avatar' + fileExtension,
       self          = this;
-
 
   fs.mkdir(folderPath, function(err){
     if(err){return cb(err);}
@@ -52,6 +66,7 @@ UserSchema.methods.downloadAvatar = function(cb){
     });
   });
 };
+*/
 
 function usernameV(v){
   return v.length >= 3 && v.length <= 12;
