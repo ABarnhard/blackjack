@@ -2,16 +2,40 @@ h1 ROOMS
 
 .row
     .small-8.columns
-        .row
-            .small-12.columns
-                h3 Create Room
+        h3 Create Room
+        form
+            .row
+                .small-4.columns
+                    label(for='name') Name
+                    input#name(type='text', name='name', ng-model='newRoom.name')
+                .small-4.columns
+                    label(for='password') Password
+                    input#password(type='text', name='name', ng-model='newRoom.password')
+                .small-4.columns
+                    button.success.tiny.radius(type='button', ng-click='createRoom()') Add!
         .row
             .small-12.columns
                 h3 Room List
+                table
+                    thead
+                        tr
+                            th Owner
+                            th Name
+                            th Password
+                            th
+                            th
+                    tbody
+                        tr(ng-repeat='room in rooms')
+                            td: .user-pic(style='background-image:url({{room.creator.avatar}})')
+                            td {{room.name}}
+                            td: input(type='password', ng-model='pwd')
+                            td: button.success.tiny.radius(type='button', ng-click='joinRoom({roomId: room._id, password: pwd})') Join
+                            td: button.alert.tiny.radius(type='button', ng-click='deleteRoom(room._id)') Delete
+
     .small-4.columns
         h3 Chat
         #messages.panel.callout.radius
-        input(type='text', ng-model='message')
+        input#chat-box(type='text', ng-model='message')
         button.success.tiny.radius(type='button', ng-click='chat(message)') Send
 
 .hidden-chat-template
