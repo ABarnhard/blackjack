@@ -16,7 +16,7 @@
     }])
     .run(['$rootScope', '$http', function($rootScope, $http){
       $http.get('/status').then(function(response){
-        $rootScope.rootUserName = response.data.username;
+        $rootScope.rootUserObject = response.data;
         $rootScope.$broadcast('user', response.data);
       }, function(){
         $rootScope.$broadcast('user', null);

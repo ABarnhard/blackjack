@@ -17,6 +17,7 @@
       $scope.logout = function(){
         User.logout().then(function(){
           $scope.user = null;
+          $scope.rootUserObject = null;
           toastr.success('User successfully logged out.');
           $state.go('home');
         });
