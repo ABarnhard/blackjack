@@ -17,6 +17,7 @@
           });
         }else{
           User.login($scope.user).then(function(response){
+            $rootScope.rootUserName = response.data.username;
             $rootScope.$broadcast('user', response.data);
             toastr.success('User successfully authenticated.');
             $state.go('home');

@@ -20,4 +20,4 @@ nav.top-bar(data-topbar, role="navigation", ng-controller='NavCtrl')
          li
             a(ng-click='logout()')
                .avatar(style='background-image:url({{user.avatar}})')
-               | {{user.username}}
+               span {{user.username}}

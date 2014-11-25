@@ -5,6 +5,7 @@
     .controller('RoomsListCtrl', ['$scope', function($scope){
 
       $scope.chat = function(msg){
+        msg = $scope.rootUserName + ': ' + msg;
         window.socket.emit('global-chat', msg);
       };
       window.socket.on('bGlobal-chat', function(data){
